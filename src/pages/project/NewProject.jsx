@@ -1,4 +1,4 @@
-import ProjectForm from "./ProjectForm";
+import ProjectForm from "../../components/ProjectForm";
 
 function NewProject() {
     return (<div>

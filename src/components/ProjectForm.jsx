@@ -1,23 +1,46 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import APIMethods from '../services/apiService';
 import { useNavigate } from 'react-router-dom';
-function ProjectForm ()
+function ProjectForm ({projectData})
 {
+    console.log('projectData:', projectData);
     const navigate = useNavigate();
     const[formData, setFormData] = useState({
-        name: '',
-        description: '',
-        status: 'active',
-        endDate: '',
+        name: projectData?.name || '',
+        description: projectData?.description || '',
+        status: projectData?.status || 'active',
+        endDate: projectData?.endDate || '',
         createdBy: '1',
         createdAt: new Date().toISOString(), 
     });
 
+    useEffect(() => {
+        if (projectData) {
+            setFormData({
+                name: projectData.name || '',
+                description: projectData.description || '',
+                status: projectData.status || 'active',
+                endDate: projectData.endDate || '',
+                createdBy: '1',
+                createdAt: new Date().toISOString(),
+            });
+        }
+    }, [projectData]);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await APIMethods.postData('/api/project',formData);
-            console.log('Project created:', response.data);
+            let response;
+            if(projectData)
+            {
+             response = await APIMethods.updateData('/api/project',formData);
+             console.log('Project created:', response.data);
+            }
+            else   
+               { response = await APIMethods.postData('/api/project',formData);
+                console.log('Project updated:', response.data);
+               }
+            
             navigate('/view-projects');
         }
         catch (error) {
