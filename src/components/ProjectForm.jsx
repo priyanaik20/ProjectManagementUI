@@ -8,7 +8,7 @@ function ProjectForm ({projectData})
     const[formData, setFormData] = useState({
         name: projectData?.name || '',
         description: projectData?.description || '',
-        status: projectData?.status || 'active',
+        status: projectData?.status || 'Active',
         endDate: projectData?.endDate || '',
         createdBy: '1',
         createdAt: new Date().toISOString(), 
@@ -19,7 +19,7 @@ function ProjectForm ({projectData})
             setFormData({
                 name: projectData.name || '',
                 description: projectData.description || '',
-                status: projectData.status || 'active',
+                status: projectData.status || 'Active',
                 endDate: projectData.endDate || '',
                 createdBy: '1',
                 createdAt: new Date().toISOString(),
@@ -33,11 +33,11 @@ function ProjectForm ({projectData})
             let response;
             if(projectData)
             {
-             response = await APIMethods.updateData('/api/project',formData);
+             response = await APIMethods.updateData(`/api/project/${projectData.id}`,formData);
              console.log('Project created:', response.data);
             }
             else   
-               { response = await APIMethods.postData('/api/project',formData);
+               { response = await APIMethods.postData('/api/project/',formData);
                 console.log('Project updated:', response.data);
                }
             
@@ -57,8 +57,8 @@ function ProjectForm ({projectData})
             <input type="text" placeholder="Add project description" value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})} style={{width:"20rem"}} />
             <label htmlFor="status" style={{width:"20rem"}}>Status:</label>
             <select name="status" id="status" value={formData.status} onChange={(e) => setFormData({...formData, status: e.target.value})} style={{width:"20rem"}}>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
             </select>
             <label htmlFor="endDate" style={{width:"20rem"}}>End Date:</label>
             <input type ="date" placeholder="Add project end date" value={formData.endDate} onChange={(e) => setFormData({...formData, endDate: e.target.value})} style={{width:"20rem"}} />

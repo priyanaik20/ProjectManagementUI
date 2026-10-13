@@ -22,6 +22,17 @@ function TaskForm() {
      setFormData({ ...formData, [key]: value });
     }
 
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            const response = await APIMethods.postData('/api/taskList', formData);
+            console.log('Task created:', response.data);
+        } catch (error) {
+            console.error('Error creating task:', error);
+        }
+    }
+
+
     const fetchProjects = async () => {
         try {
             const response = await APIMethods.getData('/api/project');           
@@ -78,6 +89,7 @@ function TaskForm() {
                         {project.name}
                     </option>
                 ))}
+                value={formData.projectId}
             </select>
             </FormItem>
             </div>
@@ -85,7 +97,7 @@ function TaskForm() {
             <div style={{ display: "flex",gap: "20px", justifyContent: "space-between" }}>
 
             <FormItem id="priority" label="Priority">
-            <select id="priority">
+            <select id="priority" value={formData.priority} onChange={(e) => handleChangeEvent(e.target.value, 'priority')}>
                 <option value="">Select Priority</option>
                 <option value="low">Low</option>
                 <option value="medium">Medium</option>
@@ -98,6 +110,8 @@ function TaskForm() {
                 <input
                     type="date"
                     id="dueDate"
+                    value={formData.dueDate}
+                    onChange={(e) => handleChangeEvent(e.target.value, 'dueDate')}
                 />
             </FormItem>
             </div>
@@ -109,6 +123,8 @@ function TaskForm() {
                     id="description"
                     placeholder="Enter task description"
                     rows="4"
+                    value={formData.description}
+                    onChange={(e) => handleChangeEvent(e.target.value, 'description')}
                 />
             </FormItem>
 
@@ -117,7 +133,7 @@ function TaskForm() {
             <div style={{ display: "flex",gap: "20px", justifyContent: "space-between" }}>
             
             <FormItem id="status" label="Status">
-                <select id="status">
+                <select id="status" value={formData.status} onChange={(e) => handleChangeEvent(e.target.value, 'status')}>
                     <option value="">Select Status</option>
                     <option value="todo">To Do</option>
                     <option value="inprogress">In Progress</option>
@@ -126,7 +142,7 @@ function TaskForm() {
             </FormItem>
 
             <FormItem id="assignedTo" label="Assign To">
-                <select id="assignedTo">
+                <select id="assignedTo" value={formData.assignedTo} onChange={(e) => handleChangeEvent(e.target.value, 'assignedTo')}>
                     <option value="">Select User</option>
                     {users.map((user) => (
                         <option key={user.id} value={user.id}>
@@ -146,6 +162,7 @@ function TaskForm() {
                     borderRadius: "5px",
                     cursor: "pointer"
                 }}
+                onClick={handleSubmit}
             >
                 Create Task
             </button>

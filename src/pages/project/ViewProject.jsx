@@ -45,7 +45,7 @@ function ViewProject(){
   <table style={{ borderCollapse: "collapse", width: "80%" }}>
     <thead>
         <tr>
-            <th style={{ border: "1px solid black", padding: "8px" }}>ID</th>
+            <th style={{ border: "1px solid black", padding: "8px",display: "none" }}>ID</th>
             <th style={{ border: "1px solid black", padding: "8px" }}>Project Name</th>
             <th style={{ border: "1px solid black", padding: "8px" }}>Description</th>
             <th style={{ border: "1px solid black", padding: "8px" }}>Status</th>
@@ -57,7 +57,7 @@ function ViewProject(){
     <tbody>
         {projects.map((project) => (
             <tr key={project.id}>
-                <td style={{ border: "1px solid black", padding: "8px" }}>
+                <td style={{ border: "1px solid black", padding: "8px", display: "none" }}>
                     {project.id}
                 </td>
                 <td style={{ border: "1px solid black", padding: "8px" }}>

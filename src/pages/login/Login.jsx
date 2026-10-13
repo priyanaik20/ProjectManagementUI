@@ -1,16 +1,16 @@
-import { useState } from 'react';
-import './Login.css';
-import UserForm from './UserForm';
-import { useNavigate } from 'react-router-dom';
-import APIMethods from '../../services/apiService';
+import { useState } from "react";
+import "./Login.css";
+import UserForm from "./UserForm";
+import { useNavigate } from "react-router-dom";
+import APIMethods from "../../services/apiService";
 
 function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [isRegistering, setIsRegistering] = useState(false);
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
   const handleSubmit = async (event) => {
@@ -20,9 +20,9 @@ function Login() {
     try {
       //const result = await login(email, password);
 
-      const response = await APIMethods.postData(`/api/login`,formData);
+      const response = await APIMethods.postData(`/api/login`, formData);
       console.log(response);
-      navigate('/view-projects');
+      navigate("/view-projects");
     } catch (error) {
       console.error(error);
     } finally {
@@ -31,7 +31,7 @@ function Login() {
   };
 
   const handleOnChange = (event) => {
-   setFormData({...formData, [event.target.id]: event.target.value });
+    setFormData({ ...formData, [event.target.id]: event.target.value });
   };
 
   return (
@@ -94,12 +94,16 @@ function Login() {
                   <a href="#">Forgot password?</a>
                 </div>
 
-                <button type="submit" className="login-button" disabled={isLoading}>
-                  {isLoading ? 'Signing in...' : 'Login'}
+                <button
+                  type="submit"
+                  className="login-button"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Signing in..." : "Login"}
                 </button>
               </form>
               <p className="auth-toggle">
-                Don’t have an account?{' '}
+                Don’t have an account?{" "}
                 <button type="button" onClick={() => setIsRegistering(true)}>
                   Register
                 </button>

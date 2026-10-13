@@ -34,7 +34,7 @@ const APIMethods = {
 
     async updateData(url, data) {
         try {
-            const response = await apiUrl.put(url, data);
+            const response = await apiUrl.patch(url, data);
             return response.data;
         }
         catch (error) {
