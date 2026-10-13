@@ -298,6 +298,26 @@ body {
   color: #b91c1c;
 }
 
+.password-input {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.password-input input {
+  width: 100%;
+  padding-right: 60px;
+}
+
+.password-input button {
+  position: absolute;
+  right: 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #555;
+}
+
 @media (max-width: 760px) {
   .login-page {
     padding: 16px 12px;

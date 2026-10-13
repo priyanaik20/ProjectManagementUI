@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import APIMethods from '../../services/apiService';
+import { LoadingSpinner } from '../../components/LoadingStates';
 
 function UserForm({ onCancel }) {
   const [formData, setFormData] = useState({
@@ -127,7 +128,7 @@ function UserForm({ onCancel }) {
         )}
 
         <button type="submit" className="login-button" disabled={isLoading || isSuccess}>
-          {isLoading ? 'Creating account...' : 'Register'}
+          {isLoading ? <LoadingSpinner label="Creating account..." /> : 'Register'}
         </button>
       </form>
 

@@ -1,25 +1,43 @@
-import axios from 'axios';
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import APIMethods from '../../services/apiService';
+import EmptyState from '../../components/EmptyState';
+import { LoadingSpinner, TableSkeletonRows } from '../../components/LoadingStates';
+import './Project.css';
 
 function ViewProject(){
 
     const[projects, setProjects] = useState([]);
+    const[isLoading, setIsLoading] = useState(true);
+    const[loadError, setLoadError] = useState('');
+    const[actionError, setActionError] = useState('');
+    const[deletingProjectIds, setDeletingProjectIds] = useState(() => new Set());
     const navigate = useNavigate();
 
-    const fetchProjects = async () => {
-        try {
-            const response = await axios.get('https://localhost:44326/api/project');
-            const data = await response.data;
-            setProjects(data);
-        } catch (error) {
-            console.error('Error fetching projects:', error);
-        }
-    };
-
     useEffect(() => {
-         fetchProjects();
+        let isMounted = true;
+
+        APIMethods.getData('/api/project')
+            .then((data) => {
+                if (isMounted) {
+                    setProjects(data);
+                }
+            })
+            .catch((error) => {
+                console.error('Error fetching projects:', error);
+                if (isMounted) {
+                    setLoadError('Could not load projects. Please try again.');
+                }
+            })
+            .finally(() => {
+                if (isMounted) {
+                    setIsLoading(false);
+                }
+            });
+
+        return () => {
+            isMounted = false;
+        };
     }, []);
 
     const handleCreateProject = () => {
@@ -31,56 +49,115 @@ function ViewProject(){
     }   
 
     const handleDelete = async (projectId) => {
+        setActionError('');
+        setDeletingProjectIds((currentIds) => new Set(currentIds).add(String(projectId)));
         try {
            await APIMethods.deleteData(`api/project/${projectId}`);
-           fetchProjects(); // Refresh the project list
+           setProjects((currentProjects) =>
+               currentProjects.filter((project) => project.id !== projectId)
+           );
         }
         catch (error) {
-            console.error('Error deleting project:', error);}
+            console.error('Error deleting project:', error);
+            setActionError('Could not delete the project. Please try again.');
+        } finally {
+            setDeletingProjectIds((currentIds) => {
+                const nextIds = new Set(currentIds);
+                nextIds.delete(String(projectId));
+                return nextIds;
+            });
+        }
     }
 
     return(
-        <div style={{height:"100vh"}}>
-            <button onClick={handleCreateProject}>Create Project</button>
-  <table style={{ borderCollapse: "collapse", width: "80%" }}>
+        <section className="project-page">
+            <div className="project-page-heading">
+                <div>
+                    {/* <span className="project-eyebrow">Workspace</span> */}
+                    <h1>Projects</h1>
+                    <p>Plan and manage your team’s project work.</p>
+                </div>
+                <button className="project-primary-button" onClick={handleCreateProject}>Create project</button>
+            </div>
+  {actionError && <p className="project-table-message error" role="alert">{actionError}</p>}
+  {isLoading ? (
+  <div className="project-table-wrap"><table className="project-table" aria-busy="true">
     <thead>
         <tr>
-            <th style={{ border: "1px solid black", padding: "8px",display: "none" }}>ID</th>
-            <th style={{ border: "1px solid black", padding: "8px" }}>Project Name</th>
-            <th style={{ border: "1px solid black", padding: "8px" }}>Description</th>
-            <th style={{ border: "1px solid black", padding: "8px" }}>Status</th>
-            <th style={{ border: "1px solid black", padding: "8px" }}>Due Date</th>
-            <th style={{ border: "1px solid black", padding: "8px" }}>Actions</th>
+            <th className="project-id-column">ID</th>
+            <th>Project Name</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Due Date</th>
+            <th>Actions</th>
         </tr>
     </thead>
-
+    <tbody><TableSkeletonRows columns={5} rows={6} /></tbody>
+  </table></div>
+  ) : loadError ? (
+    <EmptyState variant="error" title="Projects could not be loaded" message={loadError} />
+  ) : projects.length === 0 ? (
+    <EmptyState
+      title="No projects yet"
+      message="Create a project to start organizing your work."
+      action={
+        <button
+          className="project-primary-button"
+          type="button"
+          onClick={handleCreateProject}
+        >
+          Create project
+        </button>
+      }
+    />
+  ) : (
+  <div className="project-table-wrap"><table className="project-table">
+    <thead>
+        <tr>
+            <th className="project-id-column">ID</th>
+            <th>Project Name</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Due Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
     <tbody>
         {projects.map((project) => (
             <tr key={project.id}>
-                <td style={{ border: "1px solid black", padding: "8px", display: "none" }}>
+                <td className="project-id-column">
                     {project.id}
                 </td>
-                <td style={{ border: "1px solid black", padding: "8px" }}>
+                <td className="project-name-cell">
                     {project.name}
                 </td>
-                <td style={{ border: "1px solid black", padding: "8px" }}>
+                <td className="project-description-cell">
                     {project.description}
                 </td>
-                <td style={{ border: "1px solid black", padding: "8px" }}>
+                <td>
                     {project.status}
                 </td>
-                <td style={{ border: "1px solid black", padding: "8px" }}>
+                <td>
                     {project.endDate}
                 </td>
-                <td style={{ border: "1px solid black", padding: "8px" }}>
-                    <button onClick={()=>handleEdit(project.id)}>Edit</button>
-                    <button onClick={() => handleDelete(project.id)}>Delete</button>
+                <td className="project-action-cell">
+                    <button className="project-secondary-button" onClick={()=>handleEdit(project.id)}>Edit</button>
+                    <button
+                        className="project-danger-button"
+                        onClick={() => handleDelete(project.id)}
+                        disabled={deletingProjectIds.has(String(project.id))}
+                    >
+                        {deletingProjectIds.has(String(project.id)) ? (
+                            <LoadingSpinner label="Deleting..." />
+                        ) : 'Delete'}
+                    </button>
                 </td>
             </tr>
         ))}
     </tbody>
-</table>
-        </div>
+</table></div>
+  )}
+        </section>
         
         
     )

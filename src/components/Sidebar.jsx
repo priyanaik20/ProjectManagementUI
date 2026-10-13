@@ -1,17 +1,57 @@
-import { Link } from "react-router";
+import { NavLink, useLocation } from "react-router-dom";
+import "./Sidebar.css";
+
+const navigationItems = [
+  {
+    to: "/dashboard",
+    label: "Dashboard",
+    icon: "▦",
+    activePaths: ["/dashboard"],
+  },
+  {
+    to: "/view-projects",
+    label: "Projects",
+    icon: "◫",
+    activePaths: ["/view-projects", "/new-project", "/edit-project"],
+  },
+  {
+    to: "/view-tasks",
+    label: "Tasks",
+    icon: "✓",
+    activePaths: ["/view-tasks", "/create-task", "/edit-task"],
+  },
+];
 
 function Sidebar() {
+  const { pathname } = useLocation();
+
   return (
     <aside className="sidebar">
-      <h3>Menu</h3>
+      {/* <div className="sidebar-section-label">Workspace</div> */}
+      <nav aria-label="Main navigation">
+        <ul className="sidebar-nav">
+          {navigationItems.map(({ to, label, icon, activePaths }) => {
+            const isSelected = activePaths.some((path) =>
+              pathname.startsWith(path),
+            );
 
-      <nav>
-      <ul>
-        <li><Link to="/dashboard">Dashboard</Link></li>
-        <li><Link to="/view-projects">Projects</Link></li>
-        <li><Link to="/create-task">Tasks</Link></li>
-        <li><Link to="/users">Users</Link></li>
-      </ul>
+            return (
+              <li key={to}>
+                <NavLink
+                  to={to}
+                  end
+                  className={`sidebar-link${isSelected ? " active" : ""}`}
+                  aria-current={isSelected ? "page" : undefined}
+                >
+                  <span className="sidebar-link-icon" aria-hidden="true">
+                    {icon}
+                  </span>
+                  <span>{label}</span>
+                </NavLink>
+              </li>
+            );
+          })}
+        </ul>
       </nav>
     </aside>
   );

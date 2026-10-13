@@ -3,6 +3,8 @@ import "./Login.css";
 import UserForm from "./UserForm";
 import { useNavigate } from "react-router-dom";
 import APIMethods from "../../services/apiService";
+import { LoadingSpinner } from "../../components/LoadingStates";
+import { useAuth } from "../../context/AuthContext";
 
 function Login() {
   const [isLoading, setIsLoading] = useState(false);
@@ -12,6 +14,9 @@ function Login() {
     email: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
+
+  const { login } = useAuth();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -22,8 +27,10 @@ function Login() {
 
       const response = await APIMethods.postData(`/api/login`, formData);
       console.log(response);
-      navigate("/view-projects");
+      login(response);
+      navigate("/dashboard");
     } catch (error) {
+      alert("Incorrect email or password. Please enter the right credentials.");
       console.error(error);
     } finally {
       setIsLoading(false);
@@ -76,22 +83,24 @@ function Login() {
 
                 <div className="input-group">
                   <label htmlFor="password">Password</label>
-                  <input
-                    id="password"
-                    type="password"
-                    value={formData.password}
-                    onChange={handleOnChange}
-                    placeholder="Enter your password"
-                    required
-                  />
-                </div>
 
-                <div className="form-row">
-                  <label className="checkbox-row">
-                    <input type="checkbox" />
-                    <span>Remember me</span>
-                  </label>
-                  <a href="#">Forgot password?</a>
+                  <div className="password-input">
+                    <input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      value={formData.password}
+                      onChange={handleOnChange}
+                      placeholder="Enter your password"
+                      required
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? "Hide" : "Show"}
+                    </button>
+                  </div>
                 </div>
 
                 <button
@@ -99,7 +108,11 @@ function Login() {
                   className="login-button"
                   disabled={isLoading}
                 >
-                  {isLoading ? "Signing in..." : "Login"}
+                  {isLoading ? (
+                    <LoadingSpinner label="Signing in..." />
+                  ) : (
+                    "Login"
+                  )}
                 </button>
               </form>
               <p className="auth-toggle">

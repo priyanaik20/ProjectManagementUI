@@ -1,16 +1,18 @@
-// import Navbar from "../components/Navbar";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
+import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
+import "./MainLayout.css";
 
 function MainLayout() {
+  const { pathname } = useLocation();
+  const isDataView = ["/view-projects", "/view-tasks"].includes(pathname);
+
   return (
     <div className="app-layout">
-      {/* <Navbar /> */}
-
-      <div className="app-body" style={{ display: "flex", flexDirection: "row" ,gap: "5rem" }}>
+      <Header />
+      <div className="app-body">
         <Sidebar />
-
-        <main className="main-content">
+        <main className={`main-content${isDataView ? " main-content-data-view" : ""}`}>
           <Outlet />
         </main>
       </div>
