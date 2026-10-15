@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router";
 import PageTitle from "../../components/PageTitle";
 import TaskForm from "../../components/TaskForm";
-import "./Tasks.css";
+import "../../styles/tasks.css";
 
 function CreateTask() {
   const navigate = useNavigate();

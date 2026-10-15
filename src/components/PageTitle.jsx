@@ -1,6 +1,8 @@
 import Back from "./Back";
 
-function PageTitle({ title, onBack }) {
+function PageTitle(props) {
+  const { title, onBack } = props;
+
   return (
     <div className="page-header">
       <Back onBack={onBack} />

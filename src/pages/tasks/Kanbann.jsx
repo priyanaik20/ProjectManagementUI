@@ -1,6 +1,6 @@
 import { useState } from "react";
-import APIMethods from "../services/apiService";
-import { TASK_STATUSES } from "../pages/tasks/taskStatuses";
+import APIMethods from "../../services/apiService";
+import { taskStatuses } from "../../utils/util";
 
 function Kanbann(props) {
   const { data, setData, setStatusMessage } = props;
@@ -29,9 +29,7 @@ function Kanbann(props) {
     setDragOverColumn(null);
 
     setDraggedTaskId(null);
-    const task = data.find(
-      (item) => String(item.id) === String(draggedTaskId),
-    );
+    const task = data.find((item) => String(item.id) === String(draggedTaskId));
 
     if (!task || task.status === column.label) {
       return;
@@ -73,7 +71,7 @@ function Kanbann(props) {
   return (
     <div className="task-kanban-board-wrap">
       <div className="task-kanban-board">
-        {TASK_STATUSES.map((column) => {
+        {taskStatuses.map((column) => {
           const columnTasks = data.filter(
             (task) => task.status === column.label,
           );

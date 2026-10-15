@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 import APIMethods from "../services/apiService";
 import FormItem from "./FormItem";
 import { LoadingSpinner } from "./LoadingStates";
-import { TASK_STATUSES } from "../pages/tasks/taskStatuses";
-import "..//pages/tasks/taskStatuses";
 import { useNavigate } from "react-router";
+import { priorityOptions, taskStatuses } from "../utils/util";
 
 function TaskForm({ tasks }) {
   const [projects, setProjects] = useState([]);
@@ -24,61 +23,31 @@ function TaskForm({ tasks }) {
   });
   const navigate = useNavigate();
 
-  console.log("tasks", tasks);
   const handleChangeEvent = (value, key) => {
     setFormData({ ...formData, [key]: value });
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setIsSubmitting(true);
-    setSubmitError("");
+  const loadProjects = async () => {
     try {
-      if (tasks) {
-        await APIMethods.updateData(`/api/taskList/${tasks.id}`, formData);
-      } else {
-        await APIMethods.postData("/api/taskList", formData);
-      }
-      navigate("/view-tasks");
+      const response = await APIMethods.getData("/api/project");
+      setProjects(response);
     } catch (error) {
-      console.error("Error creating task:", error);
-      setSubmitError("Could not save the task. Please try again.");
-    } finally {
-      setIsSubmitting(false);
+      console.error("Error fetching projects:", error);
+    }
+  };
+
+  const loadUsers = async () => {
+    try {
+      const response = await APIMethods.getData("/api/user");
+      setUsers(response);
+    } catch (error) {
+      console.error("Error fetching users:", error);
     }
   };
 
   useEffect(() => {
-    let isMounted = true;
-
-    const loadProjects = async () => {
-      try {
-        const response = await APIMethods.getData("/api/project");
-        if (isMounted) {
-          setProjects(response);
-        }
-      } catch (error) {
-        console.error("Error fetching projects:", error);
-      }
-    };
-
-    const loadUsers = async () => {
-      try {
-        const response = await APIMethods.getData("/api/user");
-        if (isMounted) {
-          setUsers(response);
-        }
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
-
     loadProjects();
     loadUsers();
-
-    return () => {
-      isMounted = false;
-    };
   }, []);
 
   useEffect(() => {
@@ -94,6 +63,24 @@ function TaskForm({ tasks }) {
       createdAt: tasks?.createdAt || new Date().toISOString(),
     });
   }, [tasks]);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setIsSubmitting(true);
+    setSubmitError("");
+    try {
+      if (tasks) {
+        await APIMethods.updateData(`/api/taskList/${tasks.id}`, formData);
+      } else {
+        await APIMethods.postData("/api/taskList", formData);
+      }
+      navigate("/view-tasks");
+    } catch {
+      setSubmitError("Could not save the task. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const getButtonText = () => {
     if (isSubmitting) {
@@ -141,9 +128,9 @@ function TaskForm({ tasks }) {
             onChange={(e) => handleChangeEvent(e.target.value, "priority")}
           >
             <option value="">Select Priority</option>
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
+            {priorityOptions.map((priority) => (
+              <option value={priority.value}>{priority.label}</option>
+            ))}
           </select>
         </FormItem>
 
@@ -177,7 +164,7 @@ function TaskForm({ tasks }) {
             onChange={(e) => handleChangeEvent(e.target.value, "status")}
             required
           >
-            {TASK_STATUSES.map((status) => (
+            {taskStatuses.map((status) => (
               <option key={status.id} value={status.value}>
                 {status.label}
               </option>

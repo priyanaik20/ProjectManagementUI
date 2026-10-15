@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import TaskForm from "../../components/TaskForm";
-import "./Tasks.css";
+import "../../styles/tasks.css";
 import APIMethods from "../../services/apiService";
 import { useParams } from "react-router";
 import PageTitle from "../../components/PageTitle";

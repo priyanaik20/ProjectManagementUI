@@ -1,11 +1,14 @@
 import { useState } from "react";
 import APIMethods from "../services/apiService";
-import "../pages/project/Project.css";
+import "../styles/project.css";
 import { LoadingSpinner } from "./LoadingStates";
 import { useNavigate } from "react-router-dom";
 import FormItem from "./FormItem";
+import { statusOptions } from "../utils/util";
+
 function ProjectForm({ projectData }) {
   const navigate = useNavigate();
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [formData, setFormData] = useState({
@@ -29,8 +32,7 @@ function ProjectForm({ projectData }) {
       }
 
       navigate("/view-projects");
-    } catch (error) {
-      console.error("Error creating project:", error);
+    } catch {
       setSubmitError("Could not save the project. Please try again.");
     } finally {
       setIsSubmitting(false);
@@ -53,7 +55,7 @@ function ProjectForm({ projectData }) {
       </div>
 
       <div className="project-form-field">
-        <FormItem id="description" label="Description" isRequired>
+        <FormItem id="description" label="Description">
           <textarea
             id="description"
             placeholder="Add project description"
@@ -76,8 +78,9 @@ function ProjectForm({ projectData }) {
               setFormData({ ...formData, status: e.target.value })
             }
           >
-            <option value="Active">Active</option>
-            <option value="Inactive">Inactive</option>
+            {statusOptions.map((stat) => (
+              <option value={stat.value}>{stat.label}</option>
+            ))}
           </select>
         </FormItem>
       </div>

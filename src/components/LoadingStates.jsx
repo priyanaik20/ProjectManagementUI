@@ -1,4 +1,4 @@
-import "./LoadingStates.css";
+import "../styles/loading-states.css";
 
 export function LoadingSpinner({ label = "Loading" }) {
   return (
@@ -26,27 +26,3 @@ export function TableSkeletonRows({ columns, rows = 5 }) {
     </tr>
   ));
 }
-
-// export function KanbanSkeleton({ columns = 5 }) {
-//   return (
-//     <div className="kanban-skeleton" aria-label="Loading tasks" role="status">
-//       {Array.from({ length: columns }, (_, columnIndex) => (
-//         <div className="kanban-skeleton-column" key={`skeleton-column-${columnIndex}`}>
-//           <div className="skeleton-block kanban-skeleton-heading" />
-//           {[0, 1, 2].map((cardIndex) => (
-//             <div
-//               className="kanban-skeleton-card"
-//               key={`skeleton-card-${columnIndex}-${cardIndex}`}
-//             >
-//               <span className="skeleton-block kanban-skeleton-badge" />
-//               <span className="skeleton-block kanban-skeleton-title" />
-//               <span className="skeleton-block kanban-skeleton-line" />
-//               <span className="skeleton-block kanban-skeleton-meta" />
-//             </div>
-//           ))}
-//         </div>
-//       ))}
-//       <span className="visually-hidden">Loading tasks</span>
-//     </div>
-//   );
-// }

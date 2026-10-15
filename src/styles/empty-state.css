@@ -36,7 +36,6 @@
 .empty-state-line {
   fill: none;
   stroke: #c4b5fd;
-  stroke-linecap: round;
   stroke-width: 2;
 }
 
@@ -49,8 +48,6 @@
 .empty-state-check {
   fill: none;
   stroke: #fff;
-  stroke-linecap: round;
-  stroke-linejoin: round;
   stroke-width: 2;
 }
 
@@ -80,18 +77,4 @@
 
 .empty-state-error h2 {
   color: #991b1b;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .empty-state-accent {
-    animation: empty-state-pulse 2.4s ease-in-out infinite;
-    transform-box: fill-box;
-    transform-origin: center;
-  }
-
-  @keyframes empty-state-pulse {
-    50% {
-      transform: scale(1.06);
-    }
-  }
 }

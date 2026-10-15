@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom";
-import "./Sidebar.css";
+import "../styles/sidebar.css";
 
 const navigationItems = [
   {
@@ -27,7 +27,6 @@ function Sidebar() {
 
   return (
     <aside className="sidebar">
-      {/* <div className="sidebar-section-label">Workspace</div> */}
       <nav aria-label="Main navigation">
         <ul className="sidebar-nav">
           {navigationItems.map(({ to, label, icon, activePaths }) => {

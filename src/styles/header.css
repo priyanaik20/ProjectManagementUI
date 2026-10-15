@@ -1,7 +1,5 @@
 .app-header {
-  position: relative;
   z-index: 20;
-  flex: 0 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -12,53 +10,13 @@
   box-shadow: 0 3px 14px rgba(30, 41, 59, 0.04);
 }
 
-/* .app-header::before {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 100%);
-  content: "";
-} */
-
 .header-brand,
 .header-user {
   display: flex;
   align-items: center;
 }
 
-.header-back-button {
-  display: grid;
-  width: 34px;
-  height: 34px;
-  flex: 0 0 auto;
-  place-items: center;
-  border: 1px solid #e8e7f1;
-  border-radius: 10px;
-  background: #fff;
-  color: #4f46e5;
-  cursor: pointer;
-  transition: background-color 150ms ease, border-color 150ms ease;
-}
-
-.header-back-button:hover {
-  border-color: #c4b5fd;
-  background: #f5f3ff;
-}
-
-.header-back-button svg {
-  width: 18px;
-  height: 18px;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.8;
-}
-
 .header-brand {
-  margin-right: auto;
   gap: 9px;
 }
 
@@ -83,24 +41,39 @@
   letter-spacing: -0.025em;
 }
 
-.header-page-title {
-  position: absolute;
-  left: 50%;
-  padding: 6px 12px;
-  border: 1px solid #ede9fe;
-  border-radius: 999px;
-  background: #faf9ff;
-  color: #4c1d95;
-  font-size: 0.82rem;
-  font-weight: 600;
-  transform: translateX(-50%);
-}
-
 .header-user {
   gap: 8px;
   color: #475569;
   font-size: 0.82rem;
   font-weight: 600;
+}
+
+.header-back-button {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid #e8e7f1;
+  border-radius: 10px;
+  background: #fff;
+  color: #4f46e5;
+  cursor: pointer;
+}
+
+.header-back-button:hover {
+  border-color: #c4b5fd;
+  background: #f5f3ff;
+}
+
+.header-back-button svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
 }
 
 .profile-menu-container {
@@ -257,10 +230,6 @@
 
   .header-brand-name {
     font-size: 1rem;
-  }
-
-  .header-page-title {
-    display: none;
   }
 
   .header-user-label {

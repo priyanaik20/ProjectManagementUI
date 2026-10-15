@@ -1,5 +1,8 @@
 import { useNavigate } from "react-router";
-import { LoadingSpinner, TableSkeletonRows } from "./LoadingStates";
+import {
+  LoadingSpinner,
+  TableSkeletonRows,
+} from "../../components/LoadingStates";
 
 function TaskTable(props) {
   const { data, isLoading, isDeleteLoading, onDelete } = props;

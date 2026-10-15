@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import APIMethods from "../../services/apiService";
 import { useNavigate } from "react-router";
 import EmptyState from "../../components/EmptyState";
-import "./Tasks.css";
-import TaskTable from "../../components/TaskTable";
-import Kanbann from "../../components/Kanbann";
+import "../../styles/tasks.css";
+import TaskTable from "./TaskTable";
+import Kanbann from "./Kanbann";
 
 function ViewTask() {
   const [tasks, setTasks] = useState([]);
@@ -41,9 +41,6 @@ function ViewTask() {
     setIsDeleteLoading(true);
     try {
       await APIMethods.deleteData(`/api/taskList/${id}`);
-      setTasks((currentTasks) =>
-        currentTasks.filter((task) => String(task.id) !== String(id)),
-      );
       await loadTasks();
     } catch (error) {
       console.error("Error deleting task:", error);

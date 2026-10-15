@@ -31,14 +31,6 @@
   flex: 0 0 auto;
 }
 
-.project-eyebrow {
-  color: #6d28d9;
-  font-size: 0.7rem;
-  font-weight: 750;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
 .project-page-heading h1 {
   margin: 5px 0 4px;
   color: #1e1b4b;

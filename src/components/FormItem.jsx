@@ -1,15 +1,8 @@
-const FormItem = (payload) => {
-  const { label, id, isRequired, fullWidth, children } = payload;
+const FormItem = (props) => {
+  const { label, id, isRequired, children } = props;
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "0.5rem",
-        width: fullWidth ? "100%" : "auto",
-      }}
-    >
+    <div className="form-item-wrapper">
       <label htmlFor={id}>
         {label}:{isRequired ? <span className="required">*</span> : <></>}{" "}
       </label>

@@ -3,7 +3,7 @@ import ProjectForm from "../../components/ProjectForm";
 import { useState, useEffect } from "react";
 import APIMethods from "../../services/apiService";
 import { LoadingSpinner } from "../../components/LoadingStates";
-import "./Project.css";
+import "../../styles/project.css";
 import PageTitle from "../../components/PageTitle";
 
 function EditProject() {
@@ -16,29 +16,17 @@ function EditProject() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    let isMounted = true;
-
     APIMethods.getData(`/api/project/${id}`)
       .then((data) => {
-        if (isMounted) {
-          setProjectData(data);
-        }
+        setProjectData(data);
       })
       .catch((error) => {
         console.error("Error fetching project data:", error);
-        if (isMounted) {
-          setLoadError("Could not load this project. Please try again.");
-        }
+        setLoadError("Could not load this project. Please try again.");
       })
       .finally(() => {
-        if (isMounted) {
-          setIsLoading(false);
-        }
+        setIsLoading(false);
       });
-
-    return () => {
-      isMounted = false;
-    };
   }, [id]);
 
   const handleOnBack = () => {

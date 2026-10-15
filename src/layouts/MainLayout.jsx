@@ -1,7 +1,7 @@
 import { Outlet, useLocation } from "react-router-dom";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
-import "./MainLayout.css";
+import "../styles/main-layout.css";
 
 function MainLayout() {
   const { pathname } = useLocation();
@@ -12,7 +12,9 @@ function MainLayout() {
       <Header />
       <div className="app-body">
         <Sidebar />
-        <main className={`main-content${isDataView ? " main-content-data-view" : ""}`}>
+        <main
+          className={`main-content${isDataView ? " main-content-data-view" : ""}`}
+        >
           <Outlet />
         </main>
       </div>

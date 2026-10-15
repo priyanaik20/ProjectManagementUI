@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./Login.css";
+import "../../styles/login.css";
 import UserForm from "./UserForm";
 import { useNavigate } from "react-router-dom";
 import APIMethods from "../../services/apiService";
@@ -23,8 +23,6 @@ function Login() {
     setIsLoading(true);
 
     try {
-      //const result = await login(email, password);
-
       const response = await APIMethods.postData(`/api/login`, formData);
       console.log(response);
       login(response);
@@ -70,7 +68,9 @@ function Login() {
 
               <form className="login-form" onSubmit={handleSubmit}>
                 <div className="input-group">
-                  <label htmlFor="email">Email address</label>
+                  <label htmlFor="email">
+                    Email address<span className="required">*</span>
+                  </label>
                   <input
                     id="email"
                     type="email"
@@ -82,7 +82,9 @@ function Login() {
                 </div>
 
                 <div className="input-group">
-                  <label htmlFor="password">Password</label>
+                  <label htmlFor="password">
+                    Password<span className="required">*</span>
+                  </label>
 
                   <div className="password-input">
                     <input

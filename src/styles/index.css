@@ -55,3 +55,10 @@ img {
 .page-header h1 {
   margin: 0;
 }
+
+.form-item-wrapper{
+  display: "flex";
+  flex-direction: "column";
+  gap: "0.5rem";
+  width: "100%"; 
+}

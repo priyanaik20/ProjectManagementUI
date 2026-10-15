@@ -1,6 +1,6 @@
 import MainLayout from "./layouts/MainLayout";
 import Login from "./pages/login/Login";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/dashboard/Dashboard";
 import NewProject from "./pages/project/NewProject";
 import EditProject from "./pages/project/EditProject";
 import ViewProject from "./pages/project/ViewProject";

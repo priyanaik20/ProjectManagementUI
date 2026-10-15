@@ -1,47 +1,48 @@
-import { useState } from 'react';
-import APIMethods from '../../services/apiService';
-import { LoadingSpinner } from '../../components/LoadingStates';
+import { useState } from "react";
+import APIMethods from "../../services/apiService";
+import { LoadingSpinner } from "../../components/LoadingStates";
 
 function UserForm({ onCancel }) {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    passwordHash: '',
-    role: '',
+    name: "",
+    email: "",
+    passwordHash: "",
+    role: "",
     isActive: true,
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
-  // const [createdAt] = useState(() => new Date().toISOString());
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
     setFormData((currentFormData) => ({
       ...currentFormData,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-    setMessage('');
+    setMessage("");
 
     try {
-      await APIMethods.postData('/api/user', {
-        ...formData
+      await APIMethods.postData("/api/user", {
+        ...formData,
       });
       setIsSuccess(true);
-      setMessage('Your account has been created. You can now sign in.');
+      setMessage("Your account has been created. You can now sign in.");
     } catch (error) {
-      console.error('Error registering user:', error);
+      console.error("Error registering user:", error);
       setIsSuccess(false);
       setMessage(
         error.response?.data?.message ||
-          (typeof error.response?.data === 'string' ? error.response.data : '') ||
+          (typeof error.response?.data === "string"
+            ? error.response.data
+            : "") ||
           error.message ||
-          'Registration failed.'
+          "Registration failed.",
       );
     } finally {
       setIsLoading(false);
@@ -57,7 +58,9 @@ function UserForm({ onCancel }) {
 
       <form className="login-form registration-form" onSubmit={handleSubmit}>
         <div className="input-group">
-          <label htmlFor="register-name">Name</label>
+          <label htmlFor="register-name">
+            Name <span className="required">*</span>
+          </label>
           <input
             id="register-name"
             name="name"
@@ -71,7 +74,9 @@ function UserForm({ onCancel }) {
         </div>
 
         <div className="input-group">
-          <label htmlFor="register-email">Email address</label>
+          <label htmlFor="register-email">
+            Email address <span className="required">*</span>
+          </label>
           <input
             id="register-email"
             name="email"
@@ -85,7 +90,9 @@ function UserForm({ onCancel }) {
         </div>
 
         <div className="input-group">
-          <label htmlFor="register-password">Password</label>
+          <label htmlFor="register-password">
+            Password <span className="required">*</span>
+          </label>
           <input
             id="register-password"
             name="passwordHash"
@@ -99,7 +106,9 @@ function UserForm({ onCancel }) {
         </div>
 
         <div className="input-group">
-          <label htmlFor="register-role">Role</label>
+          <label htmlFor="register-role">
+            Role<span className="required">*</span>
+          </label>
           <input
             id="register-role"
             name="role"
@@ -122,18 +131,29 @@ function UserForm({ onCancel }) {
         </label>
 
         {message && (
-          <p className={`form-message ${isSuccess ? 'success' : 'error'}`} role="status">
+          <p
+            className={`form-message ${isSuccess ? "success" : "error"}`}
+            role="status"
+          >
             {message}
           </p>
         )}
 
-        <button type="submit" className="login-button" disabled={isLoading || isSuccess}>
-          {isLoading ? <LoadingSpinner label="Creating account..." /> : 'Register'}
+        <button
+          type="submit"
+          className="login-button"
+          disabled={isLoading || isSuccess}
+        >
+          {isLoading ? (
+            <LoadingSpinner label="Creating account..." />
+          ) : (
+            "Register"
+          )}
         </button>
       </form>
 
       <p className="auth-toggle">
-        Already have an account?{' '}
+        Already have an account?{" "}
         <button type="button" onClick={onCancel}>
           Sign in
         </button>
