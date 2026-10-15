@@ -8,7 +8,7 @@ function Kanbann(props) {
   const [dragOverColumn, setDragOverColumn] = useState(null);
   const [updatingTaskIds, setUpdatingTaskIds] = useState(() => new Set());
 
-  const handleTaskDragStart = (event, taskId) => {
+  const handleTaskDragStart = (taskId) => {
     setDraggedTaskId(taskId);
     setStatusMessage("");
   };
