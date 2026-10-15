@@ -3,6 +3,7 @@ import APIMethods from "../services/apiService";
 import "../pages/project/Project.css";
 import { LoadingSpinner } from "./LoadingStates";
 import { useNavigate } from "react-router-dom";
+import FormItem from "./FormItem";
 function ProjectForm({ projectData }) {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -39,53 +40,60 @@ function ProjectForm({ projectData }) {
   return (
     <form className="project-form" onSubmit={handleSubmit}>
       <div className="project-form-field">
-        <label htmlFor="name">Project name</label>
-        <input
-          id="name"
-          type="text"
-          placeholder="Add project name"
-          value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          required
-        />
+        <FormItem id="name" label="Project Name" isRequired>
+          <input
+            id="name"
+            type="text"
+            placeholder="Add project name"
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            required
+          />
+        </FormItem>
+      </div>
+
+      <div className="project-form-field">
+        <FormItem id="description" label="Description" isRequired>
+          <textarea
+            id="description"
+            placeholder="Add project description"
+            value={formData.description}
+            onChange={(e) =>
+              setFormData({ ...formData, description: e.target.value })
+            }
+            rows="4"
+          />
+        </FormItem>
       </div>
       <div className="project-form-field">
-        <label htmlFor="description">Description <span className="required">*</span></label>
-        <textarea
-          id="description"
-          placeholder="Add project description"
-          value={formData.description}
-          onChange={(e) =>
-            setFormData({ ...formData, description: e.target.value })
-          }
-          rows="4"
-        />
+        <FormItem id="status" label="Status" isRequired>
+          <select
+            name="status"
+            id="status"
+            required
+            value={formData.status}
+            onChange={(e) =>
+              setFormData({ ...formData, status: e.target.value })
+            }
+          >
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </FormItem>
       </div>
       <div className="project-form-field">
-        <label htmlFor="status">Status</label>
-        <select
-          name="status"
-          id="status"
-          required
-          value={formData.status}
-          onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-        >
-          <option value="Active">Active</option>
-          <option value="Inactive">Inactive</option>
-        </select>
-      </div>
-      <div className="project-form-field">
-        <label htmlFor="endDate">Due date</label>
-        <input
-          id="endDate"
-          type="date"
-          value={formData.endDate}
-          required
-          min={new Date().toISOString().split("T")[0]}
-          onChange={(e) =>
-            setFormData({ ...formData, endDate: e.target.value })
-          }
-        />
+        <FormItem id="endDate" label="Due Date" isRequired>
+          <input
+            id="endDate"
+            type="date"
+            value={formData.endDate}
+            required
+            min={new Date().toISOString().split("T")[0]}
+            onChange={(e) =>
+              setFormData({ ...formData, endDate: e.target.value })
+            }
+          />
+        </FormItem>
       </div>
       {submitError && (
         <p className="project-form-error" role="alert">

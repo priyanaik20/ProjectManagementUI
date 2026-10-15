@@ -66,22 +66,32 @@ function Header() {
         </span>
       )}
 
-      <div className="header-user" aria-label="ProjectFlow workspace">
-        <div
-          className="profile-circle"
-          onClick={() => setShowProfile(!showProfile)}
-        >
-          {initials || "U"}
+      <div
+        className="profile-menu-container"
+        onMouseEnter={() => setShowProfile(true)}
+        onMouseLeave={() => setShowProfile(false)}
+        onFocus={() => setShowProfile(true)}
+      >
+        <div className="header-user" aria-label="ProjectFlow workspace">
+          <button
+            className="profile-circle"
+            type="button"
+            aria-label="Open profile menu"
+            aria-expanded={showProfile}
+            aria-haspopup="true"
+          >
+            {initials || "U"}
+          </button>
         </div>
-      </div>
-      {showProfile && (
-        <div className="profile-dropdown">
-          <h4>{user?.name || "User"}</h4>
-          <p>{user?.email}</p>
+        {showProfile && (
+          <div className="profile-dropdown">
+            <h4>{user?.name || "User"}</h4>
+            <p>{user?.email}</p>
 
-          <button onClick={handleLogout}>Logout</button>
-        </div>
-      )}
+            <button onClick={handleLogout}>Logout</button>
+          </div>
+        )}
+      </div>
     </header>
   );
 }

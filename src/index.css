@@ -45,3 +45,13 @@ img {
   color: red;
   margin-left: 1px;
 }
+
+.page-header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.page-header h1 {
+  margin: 0;
+}

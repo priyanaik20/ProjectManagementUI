@@ -11,7 +11,6 @@ function TaskForm({ tasks }) {
   const [users, setUsers] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
-  const [submitSuccess, setSubmitSuccess] = useState("");
   const [formData, setFormData] = useState({
     title: tasks?.title || "",
     projectId: tasks?.projectId || "",
@@ -34,14 +33,11 @@ function TaskForm({ tasks }) {
     event.preventDefault();
     setIsSubmitting(true);
     setSubmitError("");
-    setSubmitSuccess("");
     try {
       if (tasks) {
         await APIMethods.updateData(`/api/taskList/${tasks.id}`, formData);
-        setSubmitSuccess("Task updated successfully.");
       } else {
         await APIMethods.postData("/api/taskList", formData);
-        setSubmitSuccess("Task created successfully.");
       }
       navigate("/view-tasks");
     } catch (error) {
@@ -104,7 +100,6 @@ function TaskForm({ tasks }) {
       return <LoadingSpinner label="Saving..." />;
     } else {
       return `${!tasks ? "Create" : "Update"} Task`;
-     
     }
   };
 
@@ -112,7 +107,7 @@ function TaskForm({ tasks }) {
     <form className="task-form" onSubmit={handleSubmit}>
       <h1>Task details</h1>
       <div className="task-form-row">
-        <FormItem id="taskName" label="Task Name">
+        <FormItem id="taskName" label="Task Name" isRequired>
           <input
             type="text"
             id="taskName"
@@ -122,8 +117,7 @@ function TaskForm({ tasks }) {
             onChange={(e) => handleChangeEvent(e.target.value, "title")}
           />
         </FormItem>
-
-        <FormItem id="project" label="Project">
+        <FormItem id="project" label="Project" isRequired>
           <select
             id="project"
             value={formData.projectId}
@@ -140,7 +134,7 @@ function TaskForm({ tasks }) {
         </FormItem>
       </div>
       <div className="task-form-row">
-        <FormItem id="priority" label="Priority">
+        <FormItem id="priority" label="Priority" isRequired>
           <select
             id="priority"
             value={formData.priority}
@@ -153,11 +147,12 @@ function TaskForm({ tasks }) {
           </select>
         </FormItem>
 
-        <FormItem id="dueDate" label="Due Date">
+        <FormItem id="dueDate" label="Due Date" isRequired>
           <input
             type="date"
             id="dueDate"
             value={formData.dueDate}
+            required
             onChange={(e) => handleChangeEvent(e.target.value, "dueDate")}
             min={new Date().toISOString().split("T")[0]}
           />
@@ -175,7 +170,7 @@ function TaskForm({ tasks }) {
         </FormItem>
       </div>
       <div className="task-form-row">
-        <FormItem id="status" label="Status">
+        <FormItem id="status" label="Status" isRequired>
           <select
             id="status"
             value={formData.status}
@@ -210,12 +205,6 @@ function TaskForm({ tasks }) {
           {submitError}
         </p>
       )}
-      {submitSuccess && (
-        <p className="task-success-message" role="status">
-          {submitSuccess}
-        </p>
-      )}
-
       <button
         className="task-primary-button"
         type="submit"

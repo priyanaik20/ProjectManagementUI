@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 import ProjectForm from "../../components/ProjectForm";
-import Back from "../../components/Back";
+import PageTitle from "../../components/PageTitle";
 
 function NewProject() {
   const navigate = useNavigate();
@@ -13,16 +13,7 @@ function NewProject() {
     <section className="project-page project-form-page">
       <div className="project-page-heading">
         <div>
-          <div
-            style={{
-              display: "flex",
-              gap: "8px",
-              alignItems: "center",
-            }}
-          >
-            <Back onBack={handleBack} />
-            <h1>New project</h1>
-          </div>
+          <PageTitle title="Add Project" onBack={handleBack} />
           <p>Add the details for a project you want to track.</p>
         </div>
       </div>

@@ -1,12 +1,19 @@
+import { useNavigate } from "react-router";
+import PageTitle from "../../components/PageTitle";
 import TaskForm from "../../components/TaskForm";
 import "./Tasks.css";
 
 function CreateTask() {
+  const navigate = useNavigate();
+
+  const handleOnBack = () => {
+    navigate("/view-tasks");
+  };
   return (
     <section className="task-screen">
       <div className="task-screen-heading">
         <div>
-          <h1>Create task</h1>
+          <PageTitle title="Create task" onBack={handleOnBack} />
           <p>Add the details and assignment for a new task.</p>
         </div>
       </div>
